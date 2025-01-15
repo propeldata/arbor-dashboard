@@ -1,4 +1,4 @@
-# Propel Data Next.js Sample App
+# Propel Next.js Reference Implementation
 
 This is a sample implementation showing how to integrate [Propel](https://propeldata.com) with a [Next.js](https://nextjs.org) application.
 
