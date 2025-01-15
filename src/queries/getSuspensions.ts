@@ -1,6 +1,6 @@
 import request, { gql } from "graphql-request";
 import { fetchAccessToken } from "@/lib/fetchAccessToken";
-import { unstable_noStore as noStore } from "next/cache";
+import { cache } from "react";
 
 const query = gql`query TimeSeriesQuery(
   $suspensionsCountMetricID: ID!
@@ -367,9 +367,7 @@ interface SuspensionsResponse {
   };
 }
 
-export default async function getSuspensions(academicYear: number = new Date().getFullYear()): Promise<SuspensionsResponse> {
-  noStore()
-
+const getSuspensions = cache(async (academicYear: number = new Date().getFullYear()): Promise<SuspensionsResponse> => {
   const accessToken = await fetchAccessToken();
 
   const apiUrl = process.env.PROPEL_API_URL
@@ -384,4 +382,6 @@ export default async function getSuspensions(academicYear: number = new Date().g
   });
 
   return data;
-}
+})
+
+export default getSuspensions

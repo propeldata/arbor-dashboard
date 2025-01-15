@@ -6,8 +6,11 @@ import { Skeleton } from "@/components/ui/skeleton"
 import SchoolReport from "./school-report"
 import Statistics from "./statistics"
 
-export default async function DashboardPage({ searchParams }: { searchParams: { academicYear: string } }) {
-  const academicYear = searchParams.academicYear
+export const dynamic = 'force-dynamic'
+
+export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ academicYear: string }> }) {
+  const params = await searchParams
+  const academicYear = params.academicYear ?? new Date().getFullYear().toString()
 
   return (
     <div className="flex min-h-screen bg-white">
@@ -17,36 +20,36 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
           <div className="flex justify-between">
             <h1 className="text-2xl font-bold mb-8">Your Group Headlines</h1>
             <div>
-              <Suspense fallback={<Skeleton className="h-[30px] w-[180px]"></Skeleton>}>
+              <Suspense key={academicYear} fallback={<Skeleton className="h-[30px] w-[180px]"></Skeleton>}>
                 <AcademicYearFilter />
               </Suspense>
             </div>
           </div>
           <div className="space-y-8">
             <div>
-              <Suspense fallback={
+              <Suspense key={academicYear} fallback={
                 <div className="grid grid-cols-9 gap-2">
-                  <Skeleton className="h-[300px] w-full"></Skeleton>
-                  <Skeleton className="h-[300px] w-full"></Skeleton>
-                  <Skeleton className="h-[300px] w-full"></Skeleton>
-                  <Skeleton className="h-[300px] w-full"></Skeleton>
-                  <Skeleton className="h-[300px] w-full"></Skeleton>
-                  <Skeleton className="h-[300px] w-full"></Skeleton>
-                  <Skeleton className="h-[300px] w-full"></Skeleton>
-                  <Skeleton className="h-[300px] w-full"></Skeleton>
-                  <Skeleton className="h-[300px] w-full"></Skeleton>
+                  <Skeleton className="h-[150px] w-full"></Skeleton>
+                  <Skeleton className="h-[150px] w-full"></Skeleton>
+                  <Skeleton className="h-[150px] w-full"></Skeleton>
+                  <Skeleton className="h-[150px] w-full"></Skeleton>
+                  <Skeleton className="h-[150px] w-full"></Skeleton>
+                  <Skeleton className="h-[150px] w-full"></Skeleton>
+                  <Skeleton className="h-[150px] w-full"></Skeleton>
+                  <Skeleton className="h-[150px] w-full"></Skeleton>
+                  <Skeleton className="h-[150px] w-full"></Skeleton>
                 </div>
               }>
                 <Statistics academicYear={Number(academicYear)} />
               </Suspense>
             </div>
-            <Suspense fallback={<Skeleton className="h-[300px] w-full"></Skeleton>}>
-              <SchoolReport academicYear={Number(searchParams.academicYear)} />
+            <Suspense key={academicYear} fallback={<Skeleton className="h-[300px] w-full"></Skeleton>}>
+              <SchoolReport academicYear={Number(academicYear)} />
             </Suspense>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-2">
-          <Suspense fallback={<>
+          <Suspense key={academicYear} fallback={<>
               <Skeleton className="h-[300px] w-full"></Skeleton>
               <Skeleton className="h-[300px] w-full"></Skeleton>
             </>}>
