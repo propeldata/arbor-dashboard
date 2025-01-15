@@ -1,5 +1,9 @@
 export async function fetchAccessToken(): Promise<string> {
-  const response = await fetch(`https://auth.us-east-2.propeldata.com/oauth2/token`, {
+  if (!process.env.PROPEL_AUTH_URL) {
+    throw new Error("PROPEL_AUTH_URL is not set");
+  }
+
+  const response = await fetch(process.env.PROPEL_AUTH_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
